@@ -24,7 +24,18 @@ BreedStatusWide <- BreedStatus20240827_2 %>% dplyr::select(BreedGroupID,BirdID,S
 ggplot(BreedStatusWide,aes(n_members)) + geom_histogram()
 ggplot(BreedStatusWide,aes(seasonstgt)) + geom_histogram()
 
-BreedStatusWide2 <- BreedStatusWide %>% ungroup() %>% dplyr::select(BreedGroupID,n_members,seasonstgt,HelperPresent,FledglingPresent)
+BreedStatusWide2 <- BreedStatusWide %>% ungroup() %>% dplyr::select(BreedGroupID,n_members,seasonstgt,HelperPresent,FledglingPresent,TerritoryID)
+
+firststatus <- BreedStatus20240827_2 %>% arrange(StatusID) %>% distinct(BirdID,.keep_all = T) %>% merge(.,BreedGroupLocation20240827,by="BreedGroupID") #%>% dplyr::select(BirdID,TerritoryID) %>% rename(firstTerritoryID = TerritoryID)
+
+firststatusbreedgroups <- firststatus %>% dplyr::select(BreedGroupID) %>% merge(.,BreedStatus20240827_2,by="BreedGroupID",all.x=T) %>% filter(Status %in% c("BrM","BrF","H")) %>% dplyr::select(BreedGroupID,Status,BirdID) %>% group_by(BreedGroupID,Status) %>% distinct(BirdID,.keep_all = T) %>% pivot_wider(names_from = "Status",values_from = "BirdID",names_sep = "_",names_vary = "fastest") %>% unnest_wider(BrM,names_sep = "_") %>% unnest_wider(BrF,names_sep = "_") %>% unnest_wider(H,names_sep = "_")
+
+firststatusindividuals <- merge(firststatus,firststatusbreedgroups,by="BreedGroupID",all.x=T) %>% dplyr::select(BirdID,TerritoryID,contains("BrF"),contains("BrM"),contains("H")) %>% rename(firstTerritoryID = TerritoryID)
+
+Offspring20240530 <- read_csv("~/OneDrive - University of East Anglia/Random Tables from SWDB/Offspring20240530.csv",  col_types = cols(BirthDate = col_date(format = "%d/%m/%Y")))
+Offspring20240530ind <- Offspring20240530 %>% filter(Confidence>80) %>% dplyr::select(Parent,OffID,SpouseID) %>% group_by(OffID) %>% distinct(OffID,.keep_all = T) %>% filter(!is.na(Parent))
+
+relatednessbi <- read_csv("relatedness.csv")
 
 ## functions ----
 vegan_otu <- function(physeq) {
@@ -71,23 +82,32 @@ physeqAdistance <- phyloseq::distance(PhyseqAbreeddd, method = "euclidean", type
 physeqAdistance[lower.tri(physeqAdistance)] <- 0
 
 physeqAdistance <- physeqAdistance %>% data.frame() %>% rownames_to_column("SampleID") %>% pivot_longer(.,cols=-c(SampleID)) %>% filter(value > 0)
-physeq_Abreedclr_st2 <- data.frame(sample_data(PhyseqAbreeddd)) %>% rownames_to_column("SampleID") %>% dplyr::select(SampleID,BreedGroupID,BirdID,season,SampleYear,Status,n_members,seasonstgt,HelperPresent,FledglingPresent,CatchTime,Timeinfridge,SampleDate,SamplingAge,SexEstimate)
+physeq_Abreedclr_st2 <- data.frame(sample_data(PhyseqAbreeddd)) %>% rownames_to_column("SampleID") %>% dplyr::select(SampleID,BreedGroupID,BirdID,season,SampleYear,Status,n_members,seasonstgt,HelperPresent,FledglingPresent,CatchTime,Timeinfridge,SampleDate,SamplingAge,SexEstimate,TerritoryID)
 
 physeqAdistance2 <- merge(physeqAdistance, physeq_Abreedclr_st2, by.x=("SampleID"), by.y="SampleID") %>% merge(.,physeq_Abreedclr_st2, by.x="name",by.y="SampleID") %>% merge(.,physeqrarefiedalpha2, by="SampleID",all.x=T) %>% merge(.,physeqrarefiedalpha2, by.x="name",by.y="SampleID",all.x=T) 
 
 physeqAdistance3 <- physeqAdistance2 %>% mutate(Pairs = as.factor(case_when(name == SampleID ~ "samesample" ,as.numeric(BirdID.x) == as.numeric(BirdID.y) ~ "sameBird", as.numeric(BreedGroupID.x) == as.numeric(BreedGroupID.y) ~ "sameGroup", as.numeric(BreedGroupID.x) != as.numeric(BreedGroupID.y) ~ "diffGroup"))) %>% filter(!(Pairs %in% "samesample")) %>% mutate(seasonpairs = as.factor(case_when(season.x == season.y & SampleYear.x == SampleYear.y ~ "sameyearsameseason",season.x == season.y ~ "sameseasondiffyear",SampleYear.x == SampleYear.y ~ "sameyeardiffseason", TRUE ~ "diffyeardiffseason")), noseasonstgt = case_when(Status.x %in% c("BrM","BrF") & Status.y %in% c("BrM","BrF") & seasonstgt.x == seasonstgt.y & Pairs %in% "sameGroup" ~ seasonstgt.x)) %>% mutate(SampleYear.x = as.factor(SampleYear.x)) %>% filter(Status.x %in% c("BrM","BrF","H","AB","ABX","OFL","FL","H") & Status.y %in% c("BrM","BrF","H","AB","ABX","OFL","FL","H")) %>% mutate(CatchTimediff = abs(CatchTime.x - CatchTime.y), Timeinfridgediff = abs(Timeinfridge.x - Timeinfridge.y), sampledatediff = abs(as.numeric(as.Date(SampleDate.x,"%d/%m/%Y") - as.Date(SampleDate.y,"%d/%m/%Y"))), agediff = abs(SamplingAge.x-SamplingAge.y), sexdiff = case_when(SexEstimate.x == SexEstimate.y ~ "0", TRUE ~ "1"))
 
-physeqAdistance4 <- physeqAdistance3 %>% filter(seasonpairs %in% "sameyearsameseason")  %>% mutate(Typeofpair2 = as.factor(case_when( (Status.x %in% c("BrM","BrF") & Status.y %in% c("BrM","BrF")) & Pairs %in% "sameGroup" ~ "Dominantpair", (Status.x %in% c("BrM","BrF") & Status.y %in% c("H") | Status.y %in% c("BrM","BrF") & Status.x %in% c("H")) & Pairs %in% "sameGroup" ~ "DomHelp" ,  (Status.x %in% c("BrM","BrF") & Status.y %in% c("AB","ABX") | Status.y %in% c("BrM","BrF") & Status.x %in% c("AB","ABX")) & Pairs %in% "sameGroup" ~ "DomSub", (Status.x %in% c("H") & Status.y %in% c("AB","ABX") | Status.y %in% c("H") & Status.x %in% c("AB","ABX")) & Pairs %in% "sameGroup" ~ "HelpSub", (Status.x %in% c("H","AB","ABX") & Status.y %in% c("H","AB","ABX")) & Pairs %in% "sameGroup"  ~ "SubSub",Pairs %in% "sameGroup" ~ "sameTerrothers", Pairs %in% "sameBird" ~ "sameBird",TRUE ~ Pairs))) %>% mutate(Typeofpair2 = factor(Typeofpair2,level=c("diffGroup","Dominantpair","DomHelp","DomSub","HelpSub","SubSub","sameTerrothers","sameBird")), Pairs=factor(Pairs, level=c("diffGroup","sameGroup","sameBird"))) %>% filter(!(Typeofpair2 %in% "sameTerrothers"))
+physeqAdistance4 <- physeqAdistance3 %>% filter(seasonpairs %in% "sameyearsameseason")  %>% mutate(Typeofpair2 = as.factor(case_when( (Status.x %in% c("BrM","BrF") & Status.y %in% c("BrM","BrF")) & Pairs %in% "sameGroup" ~ "Dominantpair", (Status.x %in% c("BrM","BrF") & Status.y %in% c("H") | Status.y %in% c("BrM","BrF") & Status.x %in% c("H")) & Pairs %in% "sameGroup" ~ "DomHelp" ,  (Status.x %in% c("BrM","BrF") & Status.y %in% c("AB","ABX") | Status.y %in% c("BrM","BrF") & Status.x %in% c("AB","ABX")) & Pairs %in% "sameGroup" ~ "DomSub", (Status.x %in% c("H") & Status.y %in% c("AB","ABX") | Status.y %in% c("H") & Status.x %in% c("AB","ABX")) & Pairs %in% "sameGroup" ~ "HelpSub", (Status.x %in% c("H","AB","ABX") & Status.y %in% c("H","AB","ABX")) & Pairs %in% "sameGroup"  ~ "SubSub",Pairs %in% "sameGroup" ~ "sameTerrothers", Pairs %in% "sameBird" ~ "sameBird",TRUE ~ Pairs))) %>% mutate(Typeofpair2 = factor(Typeofpair2,level=c("diffGroup","Dominantpair","DomHelp","DomSub","HelpSub","SubSub","sameTerrothers","sameBird")), Pairs=factor(Pairs, level=c("diffGroup","sameGroup","sameBird"))) %>% filter(!(Typeofpair2 %in% "sameTerrothers"))%>% filter(!(Pairs %in% "sameBird"))
 
 physeqAdistance4group <- physeqAdistance4 %>%
   mutate(ItemID1_ = pmin(BirdID.x  ,BirdID.y),
          ItemID2_ = pmax(BirdID.x  ,BirdID.y)) %>%
-  group_by(ItemID1_,ItemID2_) %>% mutate(BirdGroupID = cur_group_id())
+  group_by(ItemID1_,ItemID2_) %>% mutate(BirdGroupID = cur_group_id()) %>% 
+  merge(.,relatednessbi,by.x=c("ItemID1_","ItemID2_"),by.y = c("ind1.id","ind2.id"),all.x=T) %>% 
+  merge(.,firststatusindividuals,by.x = "BirdID.x",by.y="BirdID",all.x=T) %>% 
+  merge(.,firststatusindividuals,by.x = "BirdID.y",by.y="BirdID",all.x=T) %>% 
+  mutate(samenatal = case_when( (BirdID.y == BrF_1.x | BirdID.y== BrM_1.x | BirdID.y == H_1.x | BirdID.y == BrF_2.x | BirdID.y== BrM_2.x | BirdID.y == H_2.x |BirdID.y == H_3.x | BirdID.x == BrF_1.y | BirdID.x== BrM_1.y | BirdID.y == H_1.y | BirdID.y == BrF_2.y | BirdID.y== BrM_2.y | BirdID.y == H_2.y |BirdID.y == H_3.y ) ~ "same", TRUE ~ "different" )) %>% merge(., Offspring20240530ind,by.x="BirdID.x", by.y = "OffID",all.x=T) 
 
 #write_csv(physeqAdistance4group,"Output/physeqAdistance4group.csv")
-physeqAdistance4group <- read_csv("Output/physeqAdistance4group.csv") %>% mutate(Typeofpair2 = factor(Typeofpair2,level=c("diffGroup","Dominantpair","DomHelp","DomSub","HelpSub","SubSub","sameTerrothers","sameBird")), Pairs=factor(Pairs, level=c("diffGroup","sameGroup","sameBird")))
+#physeqAdistance4group <- read_csv("Output/physeqAdistance4group.csv") %>% mutate(Typeofpair2 = factor(Typeofpair2,level=c("diffGroup","Dominantpair","DomHelp","DomSub","HelpSub","SubSub","sameTerrothers","sameBird")), Pairs=factor(Pairs, level=c("diffGroup","sameGroup","sameBird")))
 
-physeqAdistance4groupsamepair <- physeqAdistance4group %>% filter(Pairs%in%"sameGroup")
+
+physeqAdistance4groupsamepair <- physeqAdistance4group %>% filter(Pairs%in%"sameGroup") 
+
+physeqAdistance4groupsamepair %>% group_by(samenatal,Typeofpair2) %>% summarise(n=n())
+
+physeqAdistance4groupsamepairhelp <- physeqAdistance4groupsamepair %>% filter(Typeofpair2%in%"DomHelp" & samenatal%in%"different")
 
 physeqAdistance4sss <- physeqAdistance4group %>% group_by(Pairs) %>% dplyr::summarise(count=n()) %>% mutate(value = 125)
 physeqAdistance4ss <- physeqAdistance4group %>% filter(Pairs %in% "sameGroup") %>% group_by(Typeofpair2) %>% dplyr::summarise(count=n()) %>% mutate(value = 125) 
@@ -118,8 +138,9 @@ ggplot(physeqAdistance4groupalpha,aes(Observeddiff)) + geom_histogram()
 ggplot(physeqAdistance4groupalpha,aes(Shannondiff)) + geom_histogram()
 
 # observed 
-physeqAdistance4groupalphaobslm <- lmer(sqrt(Observeddiff) ~ Pairs + agediff + sexdiff + season.x + CatchTimediff + Timeinfridgediff  + (1 | BirdGroupID) + (1|SampleYear.x), data=physeqAdistance4groupalpha)
+physeqAdistance4groupalphaobslm <- lmer(sqrt(Observeddiff) ~ Pairs + agediff + sexdiff + season.x + CatchTimediff + Timeinfridgediff + quellergt + (1 | BirdGroupID) + (1|SampleYear.x), data=physeqAdistance4groupalpha)
 simulateResiduals(physeqAdistance4groupalphaobslm,plot=T)
+vif(physeqAdistance4groupalphaobslm)
 summary(physeqAdistance4groupalphaobslm)
 car::Anova(physeqAdistance4groupalphaobslm,type="III")
 emmeans(physeqAdistance4groupalphaobslm, pairwise ~ Pairs)
@@ -134,7 +155,7 @@ emmeans(physeqAdistance4groupalphaobslm2, pairwise ~ Typeofpair2)
 #plot(physeqAdistance4groupalphaobslm2data)
 
 # shannon
-physeqAdistance4groupalphashanlm <- lmer(sqrt(Shannondiff) ~ Pairs + agediff + sexdiff + season.x + CatchTimediff + Timeinfridgediff  + (1 | BirdGroupID) + (1|SampleYear.x), data=physeqAdistance4groupalpha)
+physeqAdistance4groupalphashanlm <- lmer(sqrt(Shannondiff) ~ Pairs + agediff + sexdiff + season.x + CatchTimediff + Timeinfridgediff  + quellergt + samenatal + (1 | BirdGroupID) + (1|SampleYear.x), data=physeqAdistance4groupalpha)
 summary(physeqAdistance4groupalphashanlm)
 emmeans::emmeans(physeqAdistance4groupalphashanlm, pairwise ~ Pairs)
 simulateResiduals(physeqAdistance4groupalphashanlm,plot=T)
@@ -151,7 +172,7 @@ shanpairplot1 <- ggplot(physeqAdistance4groupalphashanlmdata2, aes(x=Pairs, y= v
   ylab("Shannon diversity difference") +theme_tufte(base_size = 15, base_family = "Arial") + 
   theme(axis.line = element_line(colour = "black", linetype=1),legend.position="none")
 
-physeqAdistance4groupalphashanlm2 <- lmer(sqrt(Shannondiff) ~ Typeofpair2 + agediff + sexdiff + season.x + CatchTimediff + Timeinfridgediff  + (1 | BirdGroupID) + (1|SampleYear.x), data=physeqAdistance4groupalpha2)
+physeqAdistance4groupalphashanlm2 <- lmer(sqrt(Shannondiff) ~ Typeofpair2 + agediff + sexdiff + season.x + CatchTimediff + Timeinfridgediff + quellergt + samenatal + (1 | BirdGroupID) + (1|SampleYear.x), data=physeqAdistance4groupalpha2)
 summary(physeqAdistance4groupalphashanlm2)
 car::Anova(physeqAdistance4groupalphashanlm2, type="III")
 emmeans::emmeans(physeqAdistance4groupalphashanlm2, pairwise ~ Typeofpair2)
@@ -171,8 +192,9 @@ ggplot(physeqAdistance4groupalphashanlm2data2, aes(x=Typeofpair2, y= value)) + g
 # within group vs between group ----
 ggplot(physeqAdistance4group, aes(value))+geom_histogram()
 
-physeqAdistance4grouplm <- lmer(value ~ Pairs + agediff + sexdiff + season.x + CatchTimediff + Timeinfridgediff  + (1 | BirdGroupID) + (1|SampleYear.x), data=physeqAdistance4group)
-summary(physeqAdistance4grouplm)
+physeqAdistance4grouplm <- lmer(value ~ Pairs + agediff + sexdiff + season.x + CatchTimediff + Timeinfridgediff + quellergt + samenatal  + (1 | BirdGroupID) + (1|SampleYear.x), data=physeqAdistance4group) 
+summary(physeqAdistance4grouplm) 
+vif(physeqAdistance4grouplm)
 emmeans(physeqAdistance4grouplm, pairwise ~ Pairs)
 physeqAdistance4grouplmdata <- ggpredict(physeqAdistance4grouplm, terms="Pairs")
 plot(physeqAdistance4grouplmdata)
@@ -181,20 +203,22 @@ physeqAdistance4grouplmdatadf <- data.frame(physeqAdistance4grouplmdata) %>% dpl
 
 pairplot1 <- ggplot(physeqAdistance4grouplmdatadf, aes(x=Pairs, y= value)) + geom_point() + geom_errorbar(aes(ymin = conf.low, ymax=conf.high),width=0.01) + stat_halfeye(data=physeqAdistance4, aes(x=Pairs,y=value,fill=Pairs),inherit.aes = F, adjust = 0.5,justification = -0.2, .width = 0, point_colour=NA, width = 0.5) + 
   scale_fill_manual(values = c("#D4E2AE","#D4E2AE","#D4E2AE","#D4E2AE","#D4E2AE","#D4E2AE","#D4E2AE","#D4E2AE")) +geom_text(data=physeqAdistance4sss, aes(x=Pairs, y=value,label=count), inherit.aes = F) + 
-  geom_signif(comparisons = list(c("diffGroup","sameBird"),c("sameGroup","sameBird")),annotations= c("***","***"),y_position = c(138, 130))+ 
+  geom_signif(comparisons = list(c("diffGroup","sameGroup")),annotations= c("***"),y_position = c(130))+ 
   xlab("Groups") +
   ylab("Microbiome dissimilarity") +theme_tufte(base_size = 15, base_family = "Arial") + 
   theme(axis.line = element_line(colour = "black", linetype=1),legend.position="none")
 
 # type of pair ----
-physeqAdistance4group2 <- physeqAdistance4group %>% filter(Pairs %in% "sameGroup")
-physeqAdistance4group2 %>% group_by(Typeofpair2) %>% summarise(n())
-physeqAdistance4grouplm2 <- lmer(value ~ Typeofpair2 + agediff + sexdiff + season.x + CatchTimediff + Timeinfridgediff  + (1 | BirdGroupID) + (1|SampleYear.x), data=physeqAdistance4group2)
+
+physeqAdistance4groupsamepair %>% group_by(Typeofpair2) %>% summarise(n())
+physeqAdistance4grouplm2 <- lmer(value ~ Typeofpair2 + agediff + sexdiff + season.x + CatchTimediff + Timeinfridgediff  + quellergt + samenatal + (1 | BirdGroupID) + (1|SampleYear.x), data=physeqAdistance4groupsamepair)
 summary(physeqAdistance4grouplm2)
 emmeans(physeqAdistance4grouplm2, pairwise ~ Typeofpair2)
 car::Anova(physeqAdistance4grouplm2,type="III")
+vif(physeqAdistance4grouplm2)
 physeqAdistance4grouplm2data <- ggpredict(physeqAdistance4grouplm2, terms="Typeofpair2")
 plot(physeqAdistance4grouplm2data)
+simulateResiduals(physeqAdistance4grouplm2,plot=T)
 
 emmeans(physeqAdistance4grouplm2, pairwise ~ Typeofpair2)
 
@@ -255,11 +279,16 @@ taxaphyseqclr %>% distinct(Genus,.keep_all = T) %>% group_by(Aero) %>% summarise
 taxaphyseqclrsum <- taxaphyseqclr%>% group_by(Sample,Aero) %>% summarise(sumgenusoxy = sum(Abundance))
 ggplot(taxaphyseqclrsum, aes(x=Aero,y=sumgenusoxy)) + geom_boxplot()
 
+physeq4asnewsdtaxtable <- taxphyseqclr %>% rownames_to_column("OTU") %>% merge(.,geminiassign, by="Genus", all.x=T ) 
+
+physeq4asnewsdtaxtable %>% group_by(Aero) %>% summarise(n=n())
+
 physeqrareaero <- transform(physeq4asnewsdgen, "compositional") %>% core_members(.,detection = 0.0001, prevalence= 0.05)
-physeq4asnewsdgenclr <-  transform(physeq4asnewsdgen, "clr")
+physeq4asnewsdgenclr <-  transform(physeq4asnewsd, "clr")
 # aerobic only  ----
-aerobicasv <- taxaphyseqclr %>% filter(Aero %in% c("Aerobic","Facultative Anaerobic")) %>% distinct(OTU)
-taxaphyseqclraerobic <- prune_taxa(aerobicasv$OTU, physeq4asnewsdgenclr)
+aerobicasv <- physeq4asnewsdtaxtable %>% filter(Aero %in% c("Aerobic","Facultative Anaerobic")) %>% distinct(OTU)
+taxaphyseqclraerobic <- prune_taxa(aerobicasv$OTU, physeq4asnewsdgen) %>% transform(.,"clr")
+
 # paired distances -
 physeqAdistanceaero <- phyloseq::distance(taxaphyseqclraerobic, method = "euclidean", type="samples") %>% as.matrix() 
 physeqAdistanceaero[lower.tri(physeqAdistanceaero)] <- 0
@@ -276,7 +305,11 @@ physeqAdistanceaero4 <- physeqAdistanceaero3 %>% filter(seasonpairs %in% "sameye
 physeqAdistance4groupaero <- physeqAdistanceaero4 %>%
   mutate(ItemID1_ = pmin(BirdID.x  ,BirdID.y),
          ItemID2_ = pmax(BirdID.x  ,BirdID.y)) %>%
-  group_by(ItemID1_,ItemID2_) %>% mutate(BirdGroupID = cur_group_id())
+  group_by(ItemID1_,ItemID2_) %>% mutate(BirdGroupID = cur_group_id())%>% 
+  merge(.,relatednessbi,by.x=c("ItemID1_","ItemID2_"),by.y = c("ind1.id","ind2.id"),all.x=T) %>% 
+  merge(.,firststatusindividuals,by.x = "BirdID.x",by.y="BirdID",all.x=T) %>% 
+  merge(.,firststatusindividuals,by.x = "BirdID.y",by.y="BirdID",all.x=T) %>% 
+  mutate(samenatal = case_when( (BirdID.y == BrF_1.x | BirdID.y== BrM_1.x | BirdID.y == H_1.x | BirdID.y == BrF_2.x | BirdID.y== BrM_2.x | BirdID.y == H_2.x |BirdID.y == H_3.x | BirdID.x == BrF_1.y | BirdID.x== BrM_1.y | BirdID.y == H_1.y | BirdID.y == BrF_2.y | BirdID.y== BrM_2.y | BirdID.y == H_2.y |BirdID.y == H_3.y ) ~ "same", TRUE ~ "different" )) %>% merge(., Offspring20240530ind,by.x="BirdID.x", by.y = "OffID",all.x=T)
 
 
 physeqAdistance4groupaerolm <- lmer(value ~ Pairs + agediff + sexdiff + season.x + CatchTimediff + Timeinfridgediff  + (1 | BirdGroupID) + (1|SampleYear.x), data=physeqAdistance4groupaero)
@@ -285,7 +318,7 @@ physeqAdistance4groupaerolmdata <- ggpredict(physeqAdistance4groupaerolm,terms =
 plot(physeqAdistance4groupaerolmdata)
 
 physeqAdistance4groupaero2 <- physeqAdistance4groupaero %>% filter(Pairs %in% "sameGroup")
-physeqAdistance4groupaerolm2 <- lmer(value ~ Typeofpair2 + agediff + sexdiff + season.x + CatchTimediff + Timeinfridgediff  + (1 | BirdGroupID) + (1|SampleYear.x), data=physeqAdistance4groupaero2)
+physeqAdistance4groupaerolm2 <- lmer(value ~ Typeofpair2 + agediff + sexdiff + season.x + CatchTimediff + Timeinfridgediff + quellergt + samenatal + (1 | BirdGroupID) + (1|SampleYear.x), data=physeqAdistance4groupaero2)
 summary(physeqAdistance4groupaerolm2)
 car::Anova(physeqAdistance4groupaerolm2, type="III")
 physeqAdistance4groupaerolm2data <- ggpredict(physeqAdistance4groupaerolm2,terms = "Typeofpair2")
@@ -294,14 +327,14 @@ plot(physeqAdistance4groupaerolm2data)
 physeqAdistance4groupaerolm2data2 <- data.frame(physeqAdistance4groupaerolm2data) %>% dplyr::rename(value = predicted, Typeofpair2 = x) 
 
 aerotypeplot1 <- ggplot(physeqAdistance4groupaerolm2data2, aes(x=Typeofpair2, y= value)) + geom_point() + geom_errorbar(aes(ymin = conf.low, ymax=conf.high),width=0.01) + stat_halfeye(data=physeqAdistance4groupaero2, aes(x=Typeofpair2,y=value,fill=Typeofpair2),inherit.aes = F, adjust = 0.5,justification = -0.2, .width = 0, point_colour=NA, width = 0.5) + 
-  scale_fill_manual(values = c("#D4E2AE","#D4E2AE","#D4E2AE","#D4E2AE","#D4E2AE","#D4E2AE","#D4E2AE","#D4E2AE")) +geom_text(data=physeqAdistance4ss, aes(x=Typeofpair2, y=80,label=count), inherit.aes = F)+ 
+  scale_fill_manual(values = c("#D4E2AE","#D4E2AE","#D4E2AE","#D4E2AE","#D4E2AE","#D4E2AE","#D4E2AE","#D4E2AE")) +geom_text(data=physeqAdistance4ss, aes(x=Typeofpair2, y=85,label=count), inherit.aes = F)+ 
   xlab("Groups") +
   ylab("Aerobic microbiome dissimilarity") +theme_tufte(base_size = 15, base_family = "Arial") + 
   theme(axis.line = element_line(colour = "black", linetype=1),legend.position="none")
 
 # anaerobes only ----
-anaasv <- taxaphyseqclr %>% filter(Aero %in% c("Anaerobic")) %>% distinct(OTU)
-taxaphyseqclranae <- prune_taxa(anaasv$OTU, physeq4asnewsdgenclr)
+anaasv <- physeq4asnewsdtaxtable %>% filter(Aero %in% c("Anaerobic")) %>% distinct(OTU)
+taxaphyseqclranae <- prune_taxa(anaasv$OTU, physeq4asnewsdgen) %>% transform(.,"clr")
 
 # alpha 
 taxaphyseqclranaerared <- prune_taxa(anaasv$OTU,physeqrarefied)
@@ -323,7 +356,11 @@ physeqAdistanceanae4 <- physeqAdistanceanae3 %>% filter(seasonpairs %in% "sameye
 physeqAdistance4groupanae <- physeqAdistanceanae4 %>%
   mutate(ItemID1_ = pmin(BirdID.x  ,BirdID.y),
          ItemID2_ = pmax(BirdID.x  ,BirdID.y)) %>%
-  group_by(ItemID1_,ItemID2_) %>% mutate(BirdGroupID = cur_group_id())
+  group_by(ItemID1_,ItemID2_) %>% mutate(BirdGroupID = cur_group_id())%>% 
+  merge(.,relatednessbi,by.x=c("ItemID1_","ItemID2_"),by.y = c("ind1.id","ind2.id"),all.x=T) %>% 
+  merge(.,firststatusindividuals,by.x = "BirdID.x",by.y="BirdID",all.x=T) %>% 
+  merge(.,firststatusindividuals,by.x = "BirdID.y",by.y="BirdID",all.x=T) %>% 
+  mutate(samenatal = case_when( (BirdID.y == BrF_1.x | BirdID.y== BrM_1.x | BirdID.y == H_1.x | BirdID.y == BrF_2.x | BirdID.y== BrM_2.x | BirdID.y == H_2.x |BirdID.y == H_3.x | BirdID.x == BrF_1.y | BirdID.x== BrM_1.y | BirdID.y == H_1.y | BirdID.y == BrF_2.y | BirdID.y== BrM_2.y | BirdID.y == H_2.y |BirdID.y == H_3.y ) ~ "same", TRUE ~ "different" )) %>% merge(., Offspring20240530ind,by.x="BirdID.x", by.y = "OffID",all.x=T)
 
 
 #alpha anaerobes
@@ -341,14 +378,15 @@ summary(physeqAdistance4groupanaealphashanlm)
 emmeans(physeqAdistance4groupanaealphashanlm, pairwise ~ Typeofpair2)
 
 # beta anaerobes
-physeqAdistance4groupanaelm <- lmer(value ~ Pairs + agediff + sexdiff + season.x + CatchTimediff + Timeinfridgediff  + (1 | BirdGroupID) + (1|SampleYear.x), data=physeqAdistance4groupanae)
+physeqAdistance4groupanaelm <- lmer(value ~ Pairs + agediff + sexdiff + season.x + CatchTimediff + Timeinfridgediff + quellergt + samenatal  + (1 | BirdGroupID) + (1|SampleYear.x), data=physeqAdistance4groupanae)
 summary(physeqAdistance4groupanaelm)
 physeqAdistance4groupanaelmdata <- ggpredict(physeqAdistance4groupanaelm,terms = "Pairs")
 plot(physeqAdistance4groupanaelmdata)
 
 physeqAdistance4groupanae2 <- physeqAdistance4groupanae %>% filter(Pairs %in% "sameGroup")
-physeqAdistance4groupanaelm2 <- lmer(value ~ Typeofpair2 + agediff + sexdiff + season.x + CatchTimediff + Timeinfridgediff  + (1 | BirdGroupID) + (1|SampleYear.x), data=physeqAdistance4groupanae2)
+physeqAdistance4groupanaelm2 <- lmer(value ~ Typeofpair2 + agediff + sexdiff + season.x + CatchTimediff + Timeinfridgediff + quellergt + samenatal  + (1 | BirdGroupID) + (1|SampleYear.x), data=physeqAdistance4groupanae2)
 summary(physeqAdistance4groupanaelm2)
+vif(physeqAdistance4groupanaelm2)
 car::Anova(physeqAdistance4groupanaelm2, type="III")
 emmeans(physeqAdistance4groupanaelm2, pairwise~Typeofpair2)
 physeqAdistance4groupanaelm2data <- ggpredict(physeqAdistance4groupanaelm2,terms = "Typeofpair2")
@@ -358,7 +396,7 @@ plot(physeqAdistance4groupanaelm2data,show_data=T)
 physeqAdistance4groupanaelm2data2 <- data.frame(physeqAdistance4groupanaelm2data) %>% dplyr::rename(value = predicted, Typeofpair2 = x) 
 
 anaerotypeplot1 <-ggplot(physeqAdistance4groupanaelm2data2, aes(x=Typeofpair2, y= value)) + geom_point() + geom_errorbar(aes(ymin = conf.low, ymax=conf.high),width=0.01) + stat_halfeye(data=physeqAdistance4groupanae2, aes(x=Typeofpair2,y=value,fill=Typeofpair2),inherit.aes = F, adjust = 0.5,justification = -0.2, .width = 0, point_colour=NA, width = 0.5) + 
-  scale_fill_manual(values = c("#D4E2AE","#D4E2AE","#D4E2AE","#D4E2AE","#D4E2AE","#D4E2AE","#D4E2AE","#D4E2AE")) +geom_text(data=physeqAdistance4ss, aes(x=Typeofpair2, y=50,label=count), inherit.aes = F) + geom_signif(comparisons = list(c("Dominantpair","DomSub")),annotations="*") +
+  scale_fill_manual(values = c("#D4E2AE","#D4E2AE","#D4E2AE","#D4E2AE","#D4E2AE","#D4E2AE","#D4E2AE","#D4E2AE")) +geom_text(data=physeqAdistance4ss, aes(x=Typeofpair2, y=47,label=count), inherit.aes = F) + geom_signif(comparisons = list(c("Dominantpair","DomSub")),annotations="*") +
   xlab("Groups") +
   ylab("Anaerobic microbiome dissimilarity") +theme_tufte(base_size = 15, base_family = "Arial") + 
   theme(axis.line = element_line(colour = "black", linetype=1),legend.position="none")

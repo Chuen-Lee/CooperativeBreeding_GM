@@ -1,7 +1,7 @@
 ﻿Genus,Aero,SporeForming
-Uncultured bacterium,Variable,Variable
+uncultured bacterium,Variable,Variable
 OLB8,Unknown,Unknown
-Uncultured,Variable,Variable
+uncultured,Variable,Variable
 Portibacter,Aerobic,No
 Lewinella,Aerobic,No
 Flavihumibacter,Aerobic,No
@@ -24,15 +24,15 @@ Taibaiella,Aerobic,No
 Ambiguous_taxa,Variable,Variable
 Cryomorpha,Aerobic,No
 Metagenome,Variable,Variable (contains diverse organisms)
-Uncultured soil bacterium,Variable,Variable
-Uncultured Bacteroidetes bacterium,Anaerobic,No
+uncultured soil bacterium,Variable,Variable
+uncultured Bacteroidetes bacterium,Anaerobic,No
 Mucilaginibacter,Aerobic,No
 Arcticibacter,Aerobic,No
 Sphingobacterium,Aerobic,No
 Nubsella,Aerobic,No
 Pedobacter,Aerobic,No
 Parapedobacter,Aerobic,No
-Uncultured Bacteroidales bacterium,Anaerobic,No
+uncultured Bacteroidales bacterium,Anaerobic,No
 Muribaculum,Anaerobic,No
 Alloprevotella,Anaerobic,No
 Prevotellaceae UCG-001,Anaerobic,No
@@ -80,8 +80,8 @@ Solitalea,Aerobic,No
 Lentimicrobium,Aerobic,No
 Crocinitomix,Aerobic,No
 Fluviicola,Aerobic,No
-Uncultured Flavobacteriales bacterium,Aerobic,No
-Uncultured marine bacterium,Variable,Variable
+uncultured Flavobacteriales bacterium,Aerobic,No
+uncultured marine bacterium,Variable,Variable
 Candidatus Cardinium,Unknown,Unknown
 Flectobacillus,Aerobic,No
 Siphonobacter,Aerobic,No
@@ -96,14 +96,14 @@ Leadbetterella,Aerobic,No
 Emticicia,Aerobic,No
 Hymenobacter,Aerobic,No
 Algoriphagus,Aerobic,No
-Uncultured Cytophagales bacterium,Aerobic,No
+uncultured Cytophagales bacterium,Aerobic,No
 Tunicatimonas,Aerobic,No
 Adhaeribacter,Aerobic,No
 Sporocytophaga,Aerobic,No
 Chryseolinea,Aerobic,No
 Ohtaekwangia,Aerobic,No
 Cytophaga,Aerobic,No
-Uncultured Carnobacterium sp.,Facultative Anaerobic,No
+uncultured Carnobacterium sp.,Facultative Anaerobic,No
 Alterococcus,Facultative Anaerobic,No
 Opitutus,Facultative Anaerobic,No
 Lacunisphaera,Aerobic,No
@@ -113,38 +113,38 @@ SM1A02,Unknown,Unknown
 CL500-3,Unknown,Unknown
 Urania-1B-19 marine sediment group,Unknown,Unknown
 Tepidisphaera,Aerobic,No
-Uncultured planctomycete,Variable,No
+uncultured planctomycete,Variable,No
 Planctomycetales bacterium Ellin6207,Unknown,No
-Uncultured Planctomycetales bacterium,Variable,No
-Uncultured candidate division SR1 bacterium,Unknown,Unknown
+uncultured Planctomycetales bacterium,Variable,No
+uncultured candidate division SR1 bacterium,Unknown,Unknown
 Candidate division SR1 bacterium MGEHA,Unknown,Unknown
-Uncultured organism,Variable,Variable
-Uncultured deep-sea bacterium,Variable,Variable
-Uncultured Clostridium sp.,Anaerobic,Yes
-Uncultured candidate division WS6 bacterium,Unknown,Unknown
-Uncultured Microgenomates group bacterium,Unknown,Unknown
-Uncultured bacterium GC1,Unknown,Unknown
-Uncultured bacterium SBR2013,Unknown,Unknown
+uncultured organism,Variable,Variable
+uncultured deep-sea bacterium,Variable,Variable
+uncultured Clostridium sp.,Anaerobic,Yes
+uncultured candidate division WS6 bacterium,Unknown,Unknown
+uncultured Microgenomates group bacterium,Unknown,Unknown
+uncultured bacterium GC1,Unknown,Unknown
+uncultured bacterium SBR2013,Unknown,Unknown
 Soil bacterium WF55,Variable,Variable
-Uncultured bacterium SBR1071,Unknown,Unknown
+uncultured bacterium SBR1071,Unknown,Unknown
 Candidate division TM7 bacterium LY2,Unknown,Unknown
 Bacterium LWQ8,Unknown,Unknown
-Uncultured cyanobacterium,Aerobic,No
+uncultured cyanobacterium,Aerobic,No
 Bacterium WWH38,Unknown,Unknown
 Candidatus Saccharibacteria bacterium UB2523,Unknown,Unknown
-Uncultured Candidatus Saccharibacteria bacterium,Unknown,Unknown
-Uncultured compost bacterium,Variable,Variable
-Uncultured gamma proteobacterium,Variable,No
+uncultured Candidatus Saccharibacteria bacterium,Unknown,Unknown
+uncultured compost bacterium,Variable,Variable
+uncultured gamma proteobacterium,Variable,No
 Unidentified,Variable,Variable
 Candidatus Saccharimonas,Unknown,Unknown
 TM7 phylum sp. oral clone FR058,Unknown,Unknown
 Candidate division TM7 bacterium JGI 0001002-L20,Unknown,Unknown
 Marine metagenome,Variable,Variable (contains diverse organisms)
 Thermus,Aerobic,No
-Uncultured Sphingobium sp.,Aerobic,No
-Uncultured bacterium SBR2096,Unknown,Unknown
+uncultured Sphingobium sp.,Aerobic,No
+uncultured bacterium SBR2096,Unknown,Unknown
 Candidatus Saccharibacteria bacterium RAAC3_TM7_1,Unknown,Unknown
-Uncultured candidate division WS5 bacterium,Unknown,Unknown
+uncultured candidate division WS5 bacterium,Unknown,Unknown
 Wastewater metagenome,Variable,Variable (contains diverse organisms)
 Meiothermus,Aerobic,No
 Deinococcus,Aerobic,No
@@ -156,7 +156,7 @@ Fusobacterium,Anaerobic,No
 Cetobacterium,Anaerobic,No
 Endosymbionts8,Unknown,Unknown
 Anaerobiospirillum,Anaerobic,No
-Uncultured Planctomycetaceae bacterium,Variable,No
+uncultured Planctomycetaceae bacterium,Variable,No
 Thermocatellispora,Aerobic,No
 Leptolyngbya ANT.L52.2,Aerobic,No
 Chroococcidiopsis SAG 2023,Aerobic,No
@@ -267,9 +267,9 @@ Proteiniborus,Anaerobic,Yes
 Alkaliphilus,Aerobic,No
 Ruminococcaceae UCG-014,Anaerobic,No
 Acholeplasma,Facultative Anaerobic,No
-Uncultured Firmicutes bacterium,Variable,Variable
-Uncultured Erysipelotrichia bacterium,Facultative Anaerobic,No
-Uncultured Erysipelotrichaceae bacterium,Facultative Anaerobic,No
+uncultured Firmicutes bacterium,Variable,Variable
+uncultured Erysipelotrichia bacterium,Facultative Anaerobic,No
+uncultured Erysipelotrichaceae bacterium,Facultative Anaerobic,No
 Candidatus Dichloromethanomonas,Anaerobic,No
 Defluviitaleaceae UCG-011,Anaerobic,No
 Christensenellaceae R-7 group,Anaerobic,No
@@ -291,7 +291,7 @@ Clostridium sensu stricto 8,Anaerobic,Yes
 Clostridium sensu stricto 3,Anaerobic,Yes
 Fonticella,Anaerobic,Yes
 Lutispora,Anaerobic,Yes
-Uncultured prokaryote,Variable,Variable
+uncultured prokaryote,Variable,Variable
 Cellulosilyticum,Anaerobic,No
 Tyzzerella 3,Anaerobic,No
 Tyzzerella,Anaerobic,No
@@ -376,7 +376,7 @@ Peptococcus,Anaerobic,No
 Desulfotomaculum,Anaerobic,Yes
 JdFR-76,Unknown,Unknown
 IheB3-7,Unknown,Unknown
-Uncultured Ignavibacterium sp.,Anaerobic,No
+uncultured Ignavibacterium sp.,Anaerobic,No
 Aliifodinibius,Anaerobic,No
 Rubrivirga,Anaerobic,No
 Longimonas,Anaerobic,No
@@ -385,7 +385,7 @@ Anaerofustis,Anaerobic,No
 Tumebacillus,Aerobic,Yes
 Nitrospira,Aerobic,No
 Candidatus Rokubacteria bacterium CSP1-6,Unknown,Unknown
-Uncultured candidate division SPAM bacterium,Unknown,Unknown
+uncultured candidate division SPAM bacterium,Unknown,Unknown
 Telmatocola,Aerobic,No
 Gemmata,Aerobic,No
 Fimbriiglobus,Aerobic,No
@@ -413,19 +413,19 @@ Planctopirus,Aerobic,No
 SH-PL14,Unknown,Unknown
 Planctomicrobium,Aerobic,No
 Planctomycetaceae bacterium Bac131,Unknown,No
-Uncultured Planctomyces sp.,Aerobic,No
+uncultured Planctomyces sp.,Aerobic,No
 Rubinisphaera,Aerobic,No
 bacterium WX65,Unknown,Unknown
-Uncultured Acidobacteria bacterium,Variable,No
+uncultured Acidobacteria bacterium,Variable,No
 Stenotrophobacter,Aerobic,No
 Aridibacter,Aerobic,No
 Blastocatella,Aerobic,No
 OLB17,Unknown,Unknown
 JGI 0001001-H03,Unknown,Unknown
 RB41,Unknown,Unknown
-Uncultured Acidobacterium sp.,Variable,No
-Uncultured Acidobacteriales bacterium,Variable,No
-Uncultured verrucomicrobium DEV059,Unknown,Unknown
+uncultured Acidobacterium sp.,Variable,No
+uncultured Acidobacteriales bacterium,Variable,No
+uncultured verrucomicrobium DEV059,Unknown,Unknown
 ADurb.Bin063-1,Unknown,Unknown
 SCGC AAA164-E04,Unknown,Unknown
 Terrimicrobium,Aerobic,No
@@ -440,27 +440,27 @@ Prosthecobacter,Aerobic,No
 Haloferula,Aerobic,No
 Luteolibacter,Aerobic,No
 Roseibacillus,Aerobic,Yes
-Uncultured bacterium gp6,Unknown,Unknown
-Uncultured proteobacterium,Variable,Variable
-Uncultured beta proteobacterium,Variable,No
-Uncultured Holophagae bacterium,Anaerobic,No
-Uncultured Saccharibacillus sp.,Aerobic,Yes
+uncultured bacterium gp6,Unknown,Unknown
+uncultured proteobacterium,Variable,Variable
+uncultured beta proteobacterium,Variable,No
+uncultured Holophagae bacterium,Anaerobic,No
+uncultured Saccharibacillus sp.,Aerobic,Yes
 Vicinamibacter,Aerobic,No
-Uncultured bacterium 259,Unknown,Unknown
-Uncultured Anaeromyxobacter sp.,Aerobic,No
-Uncultured Holophaga sp.,Anaerobic,No
+uncultured bacterium 259,Unknown,Unknown
+uncultured Anaeromyxobacter sp.,Aerobic,No
+uncultured Holophaga sp.,Anaerobic,No
 Luteitalea,Aerobic,No
-Uncultured microorganism,Variable,Variable
-Uncultured Telmatobacter sp.,Anaerobic,No
-Uncultured Desulfocaldus sp.,Anaerobic,No
-Uncultured forest soil bacterium,Variable,Variable
+uncultured microorganism,Variable,Variable
+uncultured Telmatobacter sp.,Anaerobic,No
+uncultured Desulfocaldus sp.,Anaerobic,No
+uncultured forest soil bacterium,Variable,Variable
 Subgroup 10,Unknown,Unknown
-Uncultured Desulfuromonadales bacterium,Anaerobic,No
+uncultured Desulfuromonadales bacterium,Anaerobic,No
 Gemmatirosa,Aerobic,No
 Gemmatimonas,Aerobic,No
 Longimicrobium,Aerobic,No
-Uncultured Chitinivibrionia bacterium,Aerobic,No
-Uncultured Gemmatimonadetes bacterium,Aerobic,No
+uncultured Chitinivibrionia bacterium,Aerobic,No
+uncultured Gemmatimonadetes bacterium,Aerobic,No
 Candidatus Entotheonella,Unknown,Unknown
 Elusimicrobium,Aerobic,No
 Candidatus Solibacter,Aerobic,No
@@ -470,8 +470,8 @@ Candidatus Koribacter,Aerobic,No
 Granulicella,Aerobic,No
 Chroococcidiopsis PCC 7203,Aerobic,No
 Chthonomonas,Aerobic,No
-Uncultured actinobacterium,Variable,Variable
-Uncultured Armatimonadetes bacterium,Aerobic,No
+uncultured actinobacterium,Variable,Variable
+uncultured Armatimonadetes bacterium,Aerobic,No
 Motilibacter,Aerobic,No
 Streptomyces,Aerobic,Yes
 Pseudokineococcus,Aerobic,No
@@ -485,7 +485,7 @@ Actinoalloteichus,Aerobic,No
 Cryptosporangium,Aerobic,No
 Fodinicola,Aerobic,No
 Nakamurella,Aerobic,No
-Uncultured Frankineae bacterium,Aerobic,No
+uncultured Frankineae bacterium,Aerobic,No
 Quadrisphaera,Aerobic,No
 Georgenia,Aerobic,No
 Angustibacter,Anaerobic,No
@@ -623,12 +623,12 @@ Actinopolymorpha,Aerobic,No
 Flindersiella,Aerobic,No
 Nocardiopsis,Aerobic,No
 Haloactinospora,Aerobic,No
-Uncultured Actinomycetales bacterium,Variable,Variable
+uncultured Actinomycetales bacterium,Variable,Variable
 Ilumatobacter,Aerobic,No
 CL500-29 marine group,Unknown,Unknown
 Sva0996 marine group,Unknown,Unknown
 bacterium YC-ZSS-LKJ66,Unknown,Unknown
-Uncultured Acidimicrobidae bacterium,Aerobic,No
+uncultured Acidimicrobidae bacterium,Aerobic,No
 IMCC26207,Unknown,Unknown
 actinobacterium BGR 88,Unknown,Unknown
 Iamia,Aerobic,No
@@ -638,15 +638,15 @@ Armatimonas,Aerobic,No
 Gaiella sp. EBR4-RS1,Aerobic,No
 Solirubrobacter,Aerobic,No
 Patulibacter,Aerobic,No
-Uncultured Rubrobacteraceae bacterium,Aerobic,No
+uncultured Rubrobacteraceae bacterium,Aerobic,No
 bacterium YC-ZSS-LKJ159,Unknown,Unknown
-Uncultured Rubrobacteria bacterium,Aerobic,No
+uncultured Rubrobacteria bacterium,Aerobic,No
 Conexibacter,Aerobic,No
 Parviterribacter,Aerobic,No
 JCM 18997,Unknown,Unknown
 Gaiella,Aerobic,No
-Uncultured Rubrobacterales bacterium,Aerobic,No
-Uncultured Solirubrobacter sp.,Aerobic,No
+uncultured Rubrobacterales bacterium,Aerobic,No
+uncultured Solirubrobacter sp.,Aerobic,No
 Rubrobacter,Aerobic,No
 Raoultibacter,Aerobic,No
 Eggerthella,Anaerobic,No
@@ -659,23 +659,23 @@ Atopobium,Anaerobic,No
 Coriobacteriaceae UCG-002,Anaerobic,No
 Collinsella,Anaerobic,No
 Nitriliruptor,Aerobic,No
-Uncultured candidate division SAM bacterium,Unknown,Unknown
+uncultured candidate division SAM bacterium,Unknown,Unknown
 bacterium Ellin6529,Unknown,Unknown
 Nostoc PCC-73102,Aerobic,No
 bacterium Ellin6543,Unknown,Unknown
-Uncultured Dehalococcoidia bacterium,Anaerobic,No
+uncultured Dehalococcoidia bacterium,Anaerobic,No
 Tolypothrix PCC-7601,Aerobic,No
-Uncultured Caldilineaceae bacterium,Unknown,Unknown
-Uncultured Caldilineae bacterium,Unknown,Unknown
-Uncultured Litorilinea sp.,Aerobic,No
+uncultured Caldilineaceae bacterium,Unknown,Unknown
+uncultured Caldilineae bacterium,Unknown,Unknown
+uncultured Litorilinea sp.,Aerobic,No
 Litorilinea,Aerobic,No
-Uncultured sludge bacterium H5,Unknown,Unknown
-Uncultured Anaerolineae bacterium,Anaerobic,No
+uncultured sludge bacterium H5,Unknown,Unknown
+uncultured Anaerolineae bacterium,Anaerobic,No
 OLB13,Unknown,Unknown
-Uncultured Anaerolineaceae bacterium,Anaerobic,No
-Uncultured sludge bacterium S14,Unknown,Unknown
+uncultured Anaerolineaceae bacterium,Anaerobic,No
+uncultured sludge bacterium S14,Unknown,Unknown
 OLB15,Unknown,Unknown
-Uncultured endolithic bacterium,Variable,Variable
+uncultured endolithic bacterium,Variable,Variable
 Scytonema UTEX 2349,Aerobic,No
 Scytonema VB-61278,Aerobic,No
 Scytonema PCC-7110,Aerobic,No
@@ -683,15 +683,15 @@ Synechococcus PCC-7902,Aerobic,No
 Synechococcus CC9902,Aerobic,No
 FFCH7168,Unknown,Unknown
 Cyanobium PCC-6307,Aerobic,No
-Uncultured Thermomicrobia bacterium,Unknown,Unknown
+uncultured Thermomicrobia bacterium,Unknown,Unknown
 bacterium Ellin6537,Unknown,Unknown
 Paraburkholderia tropica,Aerobic,No
-Uncultured anaerobic ammonium-oxidizing bacterium,Anaerobic,No
+uncultured anaerobic ammonium-oxidizing bacterium,Anaerobic,No
 Nitrolancea,Aerobic,No
 Sphaerobacter,Aerobic,No
-Uncultured Sphaerobacter sp.,Aerobic,No
+uncultured Sphaerobacter sp.,Aerobic,No
 Candidatus Tremblaya,Unknown,Unknown
-Uncultured candidate division SBR1093 bacterium,Unknown,Unknown
+uncultured candidate division SBR1093 bacterium,Unknown,Unknown
 EcFYyy-200,Unknown,Unknown
 Chroococcidiopsis PCC-6712,Aerobic,No
 Symplocastrum CPER-KK1,Aerobic,No
@@ -722,18 +722,18 @@ Termite Treponema cluster,Anaerobic,No
 Mucispirillum,Anaerobic,No
 Candidatus Nostocoida,Anaerobic,No
 MIZ36,Unknown,Unknown
-Uncultured Chloroflexi bacterium,Anaerobic,No
+uncultured Chloroflexi bacterium,Anaerobic,No
 Chloroflexi bacterium JEA33,Anaerobic,No
-Uncultured Chloroflexus sp.,Anaerobic,No
-Uncultured rumen bacterium,Variable,Variable
-Uncultured bacterium mle1-12,Unknown,Unknown
+uncultured Chloroflexus sp.,Anaerobic,No
+uncultured rumen bacterium,Variable,Variable
+uncultured bacterium mle1-12,Unknown,Unknown
 Kouleothrix,Anaerobic,No
 OM27 clade,Unknown,Unknown
-Uncultured bacterium SJP-3,Unknown,Unknown
+uncultured bacterium SJP-3,Unknown,Unknown
 Victivallis,Aerobic,No
 Candidatus Omnitrophus,Unknown,Unknown
-Uncultured Roseobacter sp.,Aerobic,No
-Uncultured Syntrophobacteraceae bacterium,Anaerobic,No
+uncultured Roseobacter sp.,Aerobic,No
+uncultured Syntrophobacteraceae bacterium,Anaerobic,No
 bacterium enrichment culture clone auto112_4W,Unknown,Unknown
 Thiobaca,Aerobic,No
 Roseiflexus,Anaerobic,No
@@ -776,7 +776,7 @@ Koukoulia,Aerobic,No
 Thiothrix,Aerobic,No
 Methylophaga,Aerobic,No
 Steroidobacter,Aerobic,No
-Uncultured sludge bacterium,Variable,Variable
+uncultured sludge bacterium,Variable,Variable
 Acidibacter,Aerobic,No
 Suttonella,Aerobic,No
 SZB85,Unknown,Unknown
@@ -854,9 +854,9 @@ Eikenella,Facultative Anaerobic,No
 Uruburuella,Aerobic,No
 Snodgrassella,Unknown,Unknown
 Chitinimonas,Aerobic,No
-Uncultured Alcaligenaceae bacterium,Aerobic,No
+uncultured Alcaligenaceae bacterium,Aerobic,No
 Nitrosomonas,Aerobic,No
-Uncultured Rhodocyclaceae bacterium,Aerobic,No
+uncultured Rhodocyclaceae bacterium,Aerobic,No
 MND1,Unknown,Unknown
 IS-44,Unknown,Unknown
 Burkholderia-Caballeronia-Paraburkholderia,Aerobic,No
@@ -918,14 +918,14 @@ Candidatus Jidaibacter,Unknown,Unknown
 MD3-55,Unknown,Unknown
 Bdellovibrio,Aerobic,No
 Syntrophobacter,Anaerobic,No
-Uncultured Archangiaceae bacterium,Aerobic,No
+uncultured Archangiaceae bacterium,Aerobic,No
 Cystobacter,Aerobic,No
 Myxococcus,Aerobic,No
 Vulgatibacter,Aerobic,No
 Anaeromyxobacter,Aerobic,No
-Uncultured delta proteobacterium,Variable,Variable
+uncultured delta proteobacterium,Variable,Variable
 Sandaracinus,Aerobic,No
-Uncultured bacterium mle1-27,Unknown,Unknown
+uncultured bacterium mle1-27,Unknown,Unknown
 Pajaroellobacter,Aerobic,No
 Minicystis,Aerobic,No
 Polyangium,Aerobic,No
@@ -935,17 +935,17 @@ Phaselicystis,Aerobic,No
 Nannocystis,Aerobic,No
 Pseudenhygromyxa,Aerobic,No
 Haliangium,Aerobic,No
-Uncultured Myxococcales bacterium,Aerobic,No
-Uncultured Epsilonproteobacteria bacterium,Facultative Anaerobic,No
+uncultured Myxococcales bacterium,Aerobic,No
+uncultured Epsilonproteobacteria bacterium,Facultative Anaerobic,No
 Silvanigrella,Aerobic,No
 Peredibacter,Aerobic,No
 Halobacteriovorax,Aerobic,No
 Halodesulfovibrio,Anaerobic,No
 Sva0081 sediment group,Unknown,Unknown
 Desulfatiferula,Anaerobic,No
-Uncultured Syntrophobacterales bacterium,Anaerobic,No
+uncultured Syntrophobacterales bacterium,Anaerobic,No
 Wolbachia,Facultative Anaerobic,No
-Uncultured Acetobacteraceae bacterium,Aerobic,No
+uncultured Acetobacteraceae bacterium,Aerobic,No
 AT-s3-44,Unknown,Unknown
 Ferrovibrio,Aerobic,No
 Constrictibacter,Aerobic,No
@@ -960,7 +960,7 @@ Candidatus Finniella,Unknown,Unknown
 Candidatus Alysiosphaera,Unknown,Unknown
 Geminicoccus,Aerobic,No
 Reyranella,Aerobic,No
-Uncultured Stella sp.,Unknown,Unknown
+uncultured Stella sp.,Unknown,Unknown
 Dongia,Aerobic,No
 Belnapia,Aerobic,No
 Muricoccus,Aerobic,No
@@ -1001,11 +1001,11 @@ Novosphingobium,Aerobic,No
 Blastomonas,Aerobic,No
 Parasphingopyxis,Aerobic,No
 Rhizorhapis,Aerobic,No
-Uncultured Phyllobacteriaceae bacterium,Aerobic,No
+uncultured Phyllobacteriaceae bacterium,Aerobic,No
 Amphiplicatus,Aerobic,No
 Pararhodospirillum,Anaerobic,No
 Candidatus Megaira,Unknown,Unknown
-Uncultured Rhodospirillales bacterium,Anaerobic,No
+uncultured Rhodospirillales bacterium,Anaerobic,No
 Hellea,Aerobic,No
 Hirschia,Aerobic,No
 Chthonobacter,Aerobic,No
@@ -1014,19 +1014,19 @@ Methyloceanibacter,Aerobic,No
 Agaricicola,Aerobic,No
 Acuticoccus,Aerobic,No
 Afifella,Aerobic,No
-Uncultured Rhizobiales bacterium,Variable,Variable
+uncultured Rhizobiales bacterium,Variable,Variable
 alphaI cluster,Unknown,Unknown
 Bosea,Aerobic,No
 Labrys,Aerobic,No
 SWB02,Unknown,Unknown
 bacterium enrichment culture clone Anammox_49,Anaerobic,No
-Uncultured Xanthobacteraceae bacterium,Aerobic,No
-Uncultured Rhodospirillaceae bacterium,Anaerobic,No
+uncultured Xanthobacteraceae bacterium,Aerobic,No
+uncultured Rhodospirillaceae bacterium,Anaerobic,No
 Paenochrobactrum,Aerobic,No
 Pseudoxanthobacter,Aerobic,No
 Bauldia,Aerobic,No
 Kaistia,Aerobic,No
-Uncultured Bradyrhizobiaceae bacterium,Variable,Variable
+uncultured Bradyrhizobiaceae bacterium,Variable,Variable
 Rhodoplanes,Aerobic,No
 Pseudorhodoplanes,Aerobic,No
 Pseudolabrys,Aerobic,No
@@ -1107,6 +1107,6 @@ Rhodoblastus,Anaerobic,No
 Hansschlegelia,Aerobic,No
 Methylopila,Aerobic,No
 Labrenzia,Aerobic,No
-Uncultured alpha proteobacterium,Variable,Variable
+uncultured alpha proteobacterium,Variable,Variable
 Chelativorans,Aerobic,No
 Aureimonas,Aerobic,No
