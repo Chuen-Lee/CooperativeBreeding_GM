@@ -173,8 +173,8 @@ checkknowleschat %>% group_by(conflict) %>% summarise(nconflict = n())
 geminiassign <- read_csv("InputTables/genus_gemini.csv")
 geminiassign %>% group_by(Aero) %>% summarise(n=n()) # Aerobic 651, Anaerobic 224, Facultative Anaerobic 65, Not applicable 2, Unknown 133, Variable 36
 
-checkchuengemini <- merge(geminiassign,taxaassignchuen,by="Genus",all=T) %>% filter(!is.na(Aerotolerance)) %>% mutate(conflict = case_when((Aero %in% c("Aerobic","Facultative Anaerobic") & Aerotolerance %in% c( "Aerobic","facultatively anaerobic","mixed")) | (Aero %in% "Anaerobic" & Aerotolerance %in% "Anaerobe") | Aerotolerance%in% "unknown" ~ "0", TRUE ~ "1"))
-checkknowlesgemini <- merge(geminiassign,knowleslabannote,by="Genus") %>% mutate(conflict = case_when((Aero %in% c("Aerobic","Facultative Anaerobic") & Aerotolerance_binary %in% "aerotolerant") | (Aero %in% "Anaerobic" & Aerotolerance_binary %in% "anaerobic") | (Aero %in% "Unknown" & Aerotolerance_binary %in% "unknown") | Aerotolerance_binary %in% "unknown" ~ "0", TRUE ~ "1"))
+checkchuengemini <- merge(geminiassign,taxaassignchuen,by="Genus",all=T) %>% filter(!is.na(Aerotolerance)) %>% mutate(conflict = case_when((Aero %in% c("Aerobic","Facultative Anaerobic") & Aerotolerance %in% c( "Aerobic","facultatively anaerobic","mixed")) | (Aero %in% "Anaerobic" & Aerotolerance %in% "Anaerobe") ~ "0", TRUE ~ "1"))
+checkknowlesgemini <- merge(geminiassign,knowleslabannote,by="Genus") %>% mutate(conflict = case_when((Aero %in% c("Aerobic","Facultative Anaerobic") & Aerotolerance_binary %in% c("aerotolerant","mixed")) | (Aero %in% "Anaerobic" & Aerotolerance_binary %in% "anaerobic")  ~ "0", TRUE ~ "1")) %>% filter(!(Aerotolerance_binary %in% "unknown") & !(Aero %in% "Unknown"))
 
 checkchuengemini %>% group_by(conflict) %>% summarise(nconflict = n())
 77/(77+3) # 96.3% accuracy in 80 genera
@@ -195,6 +195,30 @@ taxaphyseqclr %>% distinct(Genus,.keep_all = T) %>% group_by(Aero) %>% summarise
 
 taxaphyseqclrsum <- taxaphyseqclr%>% group_by(Sample,Aero) %>% summarise(sumgenusoxy = sum(Abundance))
 ggplot(taxaphyseqclrsum, aes(x=Aero,y=sumgenusoxy)) + geom_boxplot()
+
+taxaiassign <- merge(taxphyseqclrgenus, chatgptassign, by="Genus",all.x=T) %>%
+  dplyr::rename(ChatGPT = Oxygen) %>%
+  dplyr::select(-SporeForming) %>%
+  merge(., geminiassign, by="Genus",all.x=T) %>%
+  dplyr::rename(Gemini = Aero) %>%
+  dplyr::select(-SporeForming) %>% 
+  merge(., taxaassignchuen, by="Genus",all.x=T) %>%
+  dplyr::rename(Chuen = Aerotolerance) %>%
+  dplyr::select(-Spore_formation,-Reference,-Indirect,-Comments) %>% 
+  merge(., knowleslabannote, by="Genus",all.x=T) %>%
+  dplyr::rename(Aura = Aerotolerance_binary) %>%
+  dplyr::select(-Spore_formation,-Reference,-indirect_inference_aero,-Comments, -indirect_inference_spor, -Detected_in_mouse_gut, -`Detected_in_local_soil;`,-...1) %>%
+  mutate(ChatGPT = case_when(ChatGPT %in% "Anaerobic" ~ "Anaerobic", ChatGPT %in% c("Facultatively anaerobic", "Aerobic") ~ "Aerotolerant", !is.na(ChatGPT) ~ "Unknown", TRUE ~ "Unassigned")) %>%
+  mutate(Gemini = case_when(Gemini %in% "Anaerobic" ~ "Anaerobic", Gemini %in% c("Facultative Anaerobic", "Aerobic") ~ "Aerotolerant", !is.na(Gemini) ~ "Unknown", TRUE ~ "Unassigned")) %>%
+  mutate(Chuen = case_when(Chuen %in% "Anaerobe" ~ "Anaerobic", Chuen %in% c("facultatively anaerobic", "Aerobic","mixed") ~ "Aerotolerant", !is.na(Chuen) ~ "Unknown", TRUE ~ "Unassigned")) %>%
+  mutate(Aura = case_when(Aura %in% "anaerobic" ~ "Anaerobic", Aura %in% c("aerotolerant", "Aerobic","mixed") ~ "Aerotolerant", !is.na(Aura) ~ "Unknown", TRUE ~ "Unassigned")) %>%
+  mutate(GeminiCL = case_when(Gemini %in% "Anaerobic" & Chuen %in% "Anaerobic" ~ "Correct",Gemini %in% "Aerotolerant" & Chuen %in% "Aerotolerant" ~ "Correct", Gemini %in% "Anaerobic" & Chuen %in% "Aerotolerant" ~ "Wrong", Gemini %in% "Aerotolerant" & Chuen %in% "Anaerobic" ~ "Wrong", TRUE ~ "Not tested" )) %>%
+  mutate(GeminiAura = case_when(Gemini %in% "Anaerobic" & Aura %in% "Anaerobic" ~ "Correct",Gemini %in% "Aerotolerant" & Aura %in% "Aerotolerant" ~ "Correct", Gemini %in% "Anaerobic" & Aura %in% "Aerotolerant" ~ "Wrong", Gemini %in% "Aerotolerant" & Aura %in% "Anaerobic" ~ "Wrong", TRUE ~ "Not tested" ))
+
+taxaiassign %>% group_by(GeminiCL) %>% summarise(n=n())
+taxaiassign %>% group_by(GeminiAura) %>% summarise(n=n())
+
+write_csv(taxaiassign, "taxaiassign2.csv")
 
 # tax table
 physeq4asnewsdtaxtable <- data.frame(tax_table(physeq4asnewsdgen)) %>% rownames_to_column("OTU") %>% merge(.,geminiassign, by="Genus", all.x=T ) 

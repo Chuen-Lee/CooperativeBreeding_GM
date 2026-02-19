@@ -234,5 +234,18 @@ anaerotypeplot2
 
 # all plots
 shannontype2
+pairplot2
 ggarrange(pairplot2, typeplot2, widths = c(1.2,2), labels=c("A","B"))
 ggarrange(aerotypeplot2,anaerotypeplot2, labels=c("A","B"))
+
+tiff("Output/Figure1.tiff", res =400, units = "in", width = 8, height = 8, bg = "white")
+pairplot2
+dev.off()
+
+tiff("Output/Figure2.tiff", res =400, units = "in", width = 10, height = 8, bg = "white")
+shannontype2
+dev.off()
+
+tiff("Output/Figure3.tiff", res =400, units = "in", width = 10, height = 8, bg = "white")
+anaerotypeplot2
+dev.off()
